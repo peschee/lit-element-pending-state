@@ -1,3 +1,3 @@
-# lit-element-pending-state
+# `LitElement` + `pending-state` protocol
 
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/lit-element-pending-state)
+https://peschee.github.io/lit-element-pending-state/
