@@ -1,1 +1,1 @@
-import "./views/AppShell.js";
+import './views/AppShell.js';

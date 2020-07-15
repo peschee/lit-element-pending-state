@@ -1,11 +1,9 @@
-import { LitElement, html, css } from "lit-element";
+import { LitElement, html, css } from 'lit-element';
 
 export class ViewTwo extends LitElement {
   render() {
-    return html`
-      View 2…
-    `;
+    return html` View 2… `;
   }
 }
 
-customElements.define("view-two", ViewTwo);
+customElements.define('view-two', ViewTwo);

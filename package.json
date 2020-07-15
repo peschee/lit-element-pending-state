@@ -2,9 +2,30 @@
   "name": "@peschee/lit-element-pending-state",
   "version": "0.0.1",
   "private": true,
+  "scripts": {
+    "start": "es-dev-server --app-index index.html --node-resolve --open --watch",
+    "start:build": "npm run build && es-dev-server --root-dir dist --app-index index.html --open --compatibility none",
+    "build": "rimraf dist && rollup -c rollup.config.js",
+    "lint": "npm run lint:prettier",
+    "format": "npm run format:prettier",
+    "lint:prettier": "prettier \"**/*.js\" --check --ignore-path .gitignore",
+    "format:prettier": "prettier \"**/*.js\" --write --ignore-path .gitignore"
+  },
   "dependencies": {
     "lit-element": "^2.3.1",
-    "lit-html": "^1.2.1",
-    "@webcomponents/webcomponentsjs": "^2.4.3"
+    "lit-html": "^1.2.1"
+  },
+  "devDependencies": {
+    "@open-wc/building-rollup": "^1.4.2",
+    "deepmerge": "^4.2.2",
+    "es-dev-server": "^1.56.1",
+    "prettier": "^2.0.5",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.21.0"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "arrowParens": "avoid",
+    "printWidth": 160
   }
 }

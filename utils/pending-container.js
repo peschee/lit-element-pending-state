@@ -1,59 +1,57 @@
 /**
- * Mixin for implementing the pending-state protocol (https://github.com/justinfagnani/pending-state-protocol)
+ * Mixin for implementing the pending-state protocol
+ *
+ * @see https://github.com/justinfagnani/pending-state-protocol
  */
 export const PendingContainer = base =>
   class extends base {
     static get properties() {
       return {
-        hasPendingChildren: { type: Boolean },
-        resolvedCount: { type: Number },
-        pendingCount: { type: Number }
+        __hasPendingChildren: { type: Boolean },
+        __pendingCount: { type: Number },
       };
     }
 
     constructor() {
       super();
 
-      this.hasPendingChildren = false;
-      this.pendingCount = 0;
-      this.resolvedCount = 0;
-    }
-
-    get progress() {
-      if (this.pendingCount === 0) {
-        return 0;
-      }
-
-      return this.resolvedCount / this.pendingCount;
+      this.__hasPendingChildren = false;
+      this.__pendingCount = 0;
     }
 
     connectedCallback() {
-      super.connectedCallback();
-      this.addEventListener("pending-state", this._onPendingState);
+      this.addEventListener('pending-state', this.__onPendingState);
+      if (super.connectedCallback) {
+        super.connectedCallback();
+      }
     }
 
     disconnectedCallback() {
-      this.removeEventListener("pending-state", this._onPendingState);
-      super.disconnectedCallback();
+      this.removeEventListener('pending-state', this.__onPendingState);
+      if (super.disconnectedCallback) {
+        super.disconnectedCallback();
+      }
     }
 
-    async _onPendingState(ev) {
+    async __onPendingState(ev) {
+      console.log('__onPendingState', ev);
+
       const { promise } = ev.detail;
       if (!promise) {
         return;
       }
 
-      this.hasPendingChildren = true;
-      this.pendingCount += 1;
+      this.__hasPendingChildren = true;
+      this.__pendingCount += 1;
 
       try {
         await promise;
       } catch (err) {
-        console.error("Could not resolve promise", err);
+        // to suppress uncaught exception logs
       } finally {
-        this.resolvedCount += 1;
-        if (this.pendingCount === this.resolvedCount) {
-          this.hasPendingChildren = false;
+        this.__pendingCount -= 1;
+        if (this.__pendingCount === 0) {
+          this.__hasPendingChildren = false;
         }
       }
     }
