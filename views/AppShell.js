@@ -20,7 +20,7 @@ export class AppShell extends PendingContainer(LitElement) {
 
   constructor() {
     super();
-    this.currentView = 'one';
+    this.currentView = undefined;
   }
 
   render() {

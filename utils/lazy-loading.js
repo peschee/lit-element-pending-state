@@ -1,10 +1,15 @@
 import { directive } from 'lit-html';
 
-const resolved = new WeakSet();
+const trackedValues = [];
 
 export const lazyLoad = directive((importPromise, value) => part => {
-  if (!resolved.has(part)) {
-    importPromise.then(() => resolved.add(part));
+  // A TemplateResult object will always have the `strings` property set
+  const { strings } = value;
+
+  // We track promises for each string representation of a value
+  const valueIdentifier = strings ? strings.join('') : `${value}`;
+  if (!trackedValues.includes(valueIdentifier)) {
+    trackedValues.push(valueIdentifier);
 
     const event = new CustomEvent('pending-state', {
       detail: { promise: importPromise },
